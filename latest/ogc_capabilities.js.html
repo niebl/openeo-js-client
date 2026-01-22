@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ogc/capabilities.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ogc/capabilities.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Capabilities = require("../capabilities");
+const OpenEOCapabilities = require("../openeo/capabilities");
+const { DATA_RELS } = require("../const");
+const Utils = require("../utils");
+
+/**
+ *
+ */
+class OgcCapabilities extends Capabilities {
+
+	/**
+	 * Creates a new Capabilities object from an OGC API compatible JSON response.
+	 * 
+	 * @param {object.&lt;string, *>} data - A capabilities response compatible to the API specification for `GET /`.
+	 * @throws {Error}
+	 */
+	constructor(data) {
+		super(data);
+
+		Object.assign(this.featureMap, {
+			// OGC API
+			describeProcess: 'get /processes/{}',
+			// Sync Processing
+			computeResult: 'post /processes/{}/execution',
+		});
+
+		Object.assign(this.conformanceClasses, {
+			'features': [
+				'http://www.opengis.net/spec/ogcapi-features-1/1.*/req/core',
+				'https://api.stacspec.org/v1.*/ogcapi-features'
+			],
+			'processes': 'http://www.opengis.net/spec/ogcapi-processes-1/1.*/conf/core',
+			'processesJobList': 'http://www.opengis.net/spec/ogcapi-processes-1/1.*/req/job-list',
+			'processesDismiss': 'http://www.opengis.net/spec/ogcapi-processes-1/1.*/conf/dismiss'
+		});
+
+		const links = this.data.links;
+
+		// Temporarily parse endpoint list for authentication
+		if (Array.isArray(this.data.endpoints)) {
+			this.features = OpenEOCapabilities.endpointsToFeatures(this.data.endpoints);
+		}
+
+		const hasCollections = Utils.getLinkHref(links, DATA_RELS);
+		if (hasCollections) {
+			this.features.push('get /collections');
+			this.features.push('get /collections/{}');
+		}
+		
+		const isFeatures = this.hasConformance(this.conformanceClasses.features);
+		if (isFeatures) {
+			this.features.push('get /collections/{}/items');
+			this.features.push('get /collections/{}/items/{}');
+		}
+
+		const isProcessApi = this.hasConformance(this.conformanceClasses.processes);
+		const processLink = Utils.getLinkHref(links, 'https://www.opengis.net/def/rel/ogc/1.0/processes');
+		if (isProcessApi || processLink) {
+			this.features.push('get /processes');
+			this.features.push('get /processes/{}');
+			this.features.push('post /processes/{}/execution');
+
+			const processJobList = this.hasConformance();
+			const jobLink = Utils.getLinkHref(links, 'https://www.opengis.net/def/rel/ogc/1.0/job-list');
+			if (processJobList || jobLink) {
+				this.features.push('get /jobs');
+				this.features.push('get /jobs/{}');
+			}
+
+			const processDismiss = this.hasConformance(this.conformanceClasses.processesDismiss);
+			if (processDismiss) { // @todo Is dismiss equivalent to openEO job cancellation or deletion?
+				this.features.push('delete /jobs/{}');
+			}
+		}
+	}
+
+	/**
+	 * Returns the API type.
+	 * 
+	 * Either `openeo` or `ogcapi`.
+	 * 
+	 * @returns {string} API type
+	 */
+	apiType() {
+		return 'ogcapi';
+	}
+}
+
+
+module.exports = OgcCapabilities;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthProvider.html">AuthProvider</a></li><li><a href="BaseEntity.html">BaseEntity</a></li><li><a href="BasicProvider.html">BasicProvider</a></li><li><a href="Builder.html">Builder</a></li><li><a href="BuilderNode.html">BuilderNode</a></li><li><a href="Capabilities.html">Capabilities</a></li><li><a href="Client.html">Client</a></li><li><a href="CollectionPages.html">CollectionPages</a></li><li><a href="Connection.html">Connection</a></li><li><a href="Environment.html">Environment</a></li><li><a href="FileTypes.html">FileTypes</a></li><li><a href="Formula.html">Formula</a></li><li><a href="ItemPages.html">ItemPages</a></li><li><a href="Job.html">Job</a></li><li><a href="JobPages.html">JobPages</a></li><li><a href="Logs.html">Logs</a></li><li><a href="OgcCapabilities.html">OgcCapabilities</a></li><li><a href="OgcConnection.html">OgcConnection</a></li><li><a href="OgcMigrate.html">OgcMigrate</a></li><li><a href="OgcProcessParser.html">OgcProcessParser</a></li><li><a href="OidcProvider.html">OidcProvider</a></li><li><a href="Pages.html">Pages</a></li><li><a href="Parameter.html">Parameter</a></li><li><a href="ProcessPages.html">ProcessPages</a></li><li><a href="Service.html">Service</a></li><li><a href="ServicePages.html">ServicePages</a></li><li><a href="UserFile.html">UserFile</a></li><li><a href="UserFilePages.html">UserFilePages</a></li><li><a href="UserProcess.html">UserProcess</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#next">next</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Jan 22 2026 09:59:53 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
