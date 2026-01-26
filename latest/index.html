@@ -26,7 +26,7 @@
     
 
 
-    <h3>@openeo/js-client 3.0.0-alpha.1</h3>
+    <h3>@openeo/js-client 2.9.0</h3>
 
 
 
@@ -59,19 +59,19 @@ See the <a href="CHANGELOG.md">CHANGELOG</a> for recent changes.</p>
 <pre class="prettyprint source lang-html"><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/axios@1/dist/axios.min.js&quot;>&lt;/script>
 &lt;script src=&quot;https://cdn.jsdelivr.net/npm/oidc-client@1/dist/oidc-client.min.js&quot;>&lt;/script> &lt;!-- Only required if you'd like to enable authentication via OpenID Connect -->
 &lt;script src=&quot;https://cdn.jsdelivr.net/npm/multihashes@3/src/index.min.js&quot;>&lt;/script> &lt;!-- Only required if you have checksums in the STAC metadata -->
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@openeo/js-client@3/client.min.js&quot;>&lt;/script>
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@openeo/js-client@2/openeo.min.js&quot;>&lt;/script>
 </code></pre>
 <h3>NodeJS</h3>
 <p>To install it in a NodeJS environment run:
 <code>npm install @openeo/js-client</code></p>
 <p>Afterwards, you can import the package:
-<code>const { Client } = require('@openeo/js-client');</code></p>
+<code>const { OpenEO } = require('@openeo/js-client');</code></p>
 <h3>TypeScript</h3>
 <p>Warning: The TypeScript integration is still <strong>experimental</strong>! Please help us improve it by opening issues or pull requests.</p>
 <p>To install it in a TypeScript environment run:
 <code>npm install @openeo/js-client</code></p>
 <p>Afterwards, you can import the package:
-<code>import { Client } from '@openeo/js-client';</code></p>
+<code>import { OpenEO } from '@openeo/js-client';</code></p>
 <h3>Examples</h3>
 <p>In the browser:</p>
 <ul>
@@ -91,7 +91,7 @@ See the <a href="CHANGELOG.md">CHANGELOG</a> for recent changes.</p>
 <p><img src="https://github.com/Open-EO/openeo-js-client/workflows/JS%20Client%20Tests/badge.svg" alt="JS Client Tests"></p>
 <p>Always make sure to adapt changes in the *.js files to the openeo.d.ts file.
 If changes are larger you may want to run <code>npm run tsd</code> and regenerate the declaration file and cherry-pick your changes from there.</p>
-<p>Generate a build: <code>npm run build</code> (generates <code>client.js</code> and <code>client.min.js</code>)</p>
+<p>Generate a build: <code>npm run build</code> (generates <code>openeo.js</code> and <code>openeo.min.js</code>)</p>
 <p>Generate the documentation to the <code>docs/</code> folder: <code>npm run docs</code></p>
 <p>Check against the coding guidelines: <code>npm run lint</code></p>
 <p>Run tests:</p>
@@ -122,13 +122,13 @@ See <a href="https://github.com/Open-EO/openeo-web-editor">https://github.com/Op
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthProvider.html">AuthProvider</a></li><li><a href="BaseEntity.html">BaseEntity</a></li><li><a href="BasicProvider.html">BasicProvider</a></li><li><a href="Builder.html">Builder</a></li><li><a href="BuilderNode.html">BuilderNode</a></li><li><a href="Capabilities.html">Capabilities</a></li><li><a href="Client.html">Client</a></li><li><a href="CollectionPages.html">CollectionPages</a></li><li><a href="Connection.html">Connection</a></li><li><a href="Environment.html">Environment</a></li><li><a href="FileTypes.html">FileTypes</a></li><li><a href="Formula.html">Formula</a></li><li><a href="ItemPages.html">ItemPages</a></li><li><a href="Job.html">Job</a></li><li><a href="JobPages.html">JobPages</a></li><li><a href="Logs.html">Logs</a></li><li><a href="OgcCapabilities.html">OgcCapabilities</a></li><li><a href="OgcConnection.html">OgcConnection</a></li><li><a href="OgcMigrate.html">OgcMigrate</a></li><li><a href="OgcProcessParser.html">OgcProcessParser</a></li><li><a href="OidcProvider.html">OidcProvider</a></li><li><a href="Pages.html">Pages</a></li><li><a href="Parameter.html">Parameter</a></li><li><a href="ProcessPages.html">ProcessPages</a></li><li><a href="Service.html">Service</a></li><li><a href="ServicePages.html">ServicePages</a></li><li><a href="UserFile.html">UserFile</a></li><li><a href="UserFilePages.html">UserFilePages</a></li><li><a href="UserProcess.html">UserProcess</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#next">next</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthProvider.html">AuthProvider</a></li><li><a href="BaseEntity.html">BaseEntity</a></li><li><a href="BasicProvider.html">BasicProvider</a></li><li><a href="Builder.html">Builder</a></li><li><a href="BuilderNode.html">BuilderNode</a></li><li><a href="Capabilities.html">Capabilities</a></li><li><a href="CollectionPages.html">CollectionPages</a></li><li><a href="Connection.html">Connection</a></li><li><a href="Environment.html">Environment</a></li><li><a href="FileTypes.html">FileTypes</a></li><li><a href="Formula.html">Formula</a></li><li><a href="ItemPages.html">ItemPages</a></li><li><a href="Job.html">Job</a></li><li><a href="JobPages.html">JobPages</a></li><li><a href="Logs.html">Logs</a></li><li><a href="OidcProvider.html">OidcProvider</a></li><li><a href="OpenEO.html">OpenEO</a></li><li><a href="Pages.html">Pages</a></li><li><a href="Parameter.html">Parameter</a></li><li><a href="ProcessPages.html">ProcessPages</a></li><li><a href="Service.html">Service</a></li><li><a href="ServicePages.html">ServicePages</a></li><li><a href="UserFile.html">UserFile</a></li><li><a href="UserFilePages.html">UserFilePages</a></li><li><a href="UserProcess.html">UserProcess</a></li></ul><h3>Global</h3><ul><li><a href="global.html#next">next</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Jan 22 2026 14:42:59 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Jan 26 2026 10:26:58 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
